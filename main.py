@@ -3,6 +3,13 @@ from datetime import datetime
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {
+        "status": "ok",
+        "message": "API funcionando. Usa /captura para pruebas con Tap Tag."
+    }
+
 @app.get("/captura")
 async def captura_info(request: Request):
     info = {
@@ -15,5 +22,6 @@ async def captura_info(request: Request):
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
 
-    print("Nuevo acceso:", info)  # Esto aparecerá en los logs de Render
-    return {"status": "ok", "message": "Acceso registrado"}
+    print("Nuevo acceso:", info)  # Este print sí se ve en Render (Logs)
+    return info
+
