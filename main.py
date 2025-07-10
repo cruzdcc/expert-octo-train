@@ -1,13 +1,15 @@
+import logging
 from fastapi import FastAPI, Request
 from datetime import datetime
 
 app = FastAPI()
+logger = logging.getLogger("uvicorn.access")
 
 @app.get("/")
 async def root():
     return {
         "status": "ok",
-        "message": "API funcionando. Usa /captura para pruebas con Tap Tag."
+        "message": "API funcionando. Usa /captura?tag=ID para pruebas con Tap Tag."
     }
 
 @app.get("/captura")
@@ -22,6 +24,6 @@ async def captura_info(request: Request):
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
 
-    print("Nuevo acceso:", info)  # Este print sí se ve en Render (Logs)
+    logger.info(f"Nuevo acceso: {info}")
     return info
 
