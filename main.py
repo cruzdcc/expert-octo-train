@@ -14,9 +14,12 @@ async def root():
 
 @app.get("/captura")
 async def captura_info(request: Request):
+    referer = request.headers.get("referer")  # <- Aquí capturamos el URL anterior
+
     info = {
         "ip": request.client.host,
         "user_agent": request.headers.get("user-agent"),
+        "referer": referer,  # <- Incluimos el referer en la respuesta
         "headers": dict(request.headers),
         "query_params": dict(request.query_params),
         "url": str(request.url),
@@ -26,4 +29,3 @@ async def captura_info(request: Request):
 
     logger.info(f"Nuevo acceso: {info}")
     return info
-
